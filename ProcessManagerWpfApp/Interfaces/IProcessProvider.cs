@@ -1,4 +1,6 @@
-﻿namespace ProcessManagerWpfApp.Interfaces;
+﻿using ProcessManagerWpfApp.Models;
+
+namespace ProcessManagerWpfApp.Interfaces;
 
 internal interface IProcessProvider
 {
