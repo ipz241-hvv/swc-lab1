@@ -1,0 +1,58 @@
+﻿<Window x:Class="ProcessManagerWpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Менеджер процесів" Height="450" Width="800">
+    <Grid Margin="10,10,10,13">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <Button x:Name="startCalcButton" Content="Калькулятор" Width="100" Margin="0,0,5,0" Click="startCalcButton_Click"/>
+            <Button x:Name="startWordButton" Content="Word" Width="100" Margin="0,0,5,0" Click="startWordButton_Click"/>
+            <Button x:Name="startNotepadButton" Content="Блокнот" Width="100" Margin="0,0,5,0" Click="startNotepadButton_Click"/>
+            <Button x:Name="startBrowserButton" Content="Браузер" Width="100" Margin="0,0,5,0" Click="startBrowserButton_Click"/>
+            <Button x:Name="startExplorerButton" Content="Провідник" Width="100" Margin="0,0,5,0" Click="startExplorerButton_Click"/>
+
+            <Button x:Name="refreshButton" Content="Оновити список" Width="120" Margin="20,0,0,0" Click="refreshButton_Click"/>
+        </StackPanel>
+
+        <DataGrid x:Name="processesDataGrid"
+                  Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  Margin="0,0,0,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Width="60" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Назва" Width="*" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Пам'ять (MB)" Width="100" Binding="{Binding MemoryMb}"/>
+                <DataGridTextColumn Header="Старт" Width="170" Binding="{Binding StartTime}"/>
+                <DataGridTextColumn Header="Пріоритет" Width="110" Binding="{Binding Priority}"/>
+                <DataGridTextColumn Header="Потоків" Width="70" Binding="{Binding Threads}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Label Content="Пріоритет:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox x:Name="priorityComboBox" Width="130" Margin="0,0,10,0">
+                <ComboBoxItem Content="Idle"/>
+                <ComboBoxItem Content="BelowNormal"/>
+                <ComboBoxItem Content="Normal"/>
+                <ComboBoxItem Content="AboveNormal"/>
+                <ComboBoxItem Content="High"/>
+                <ComboBoxItem Content="RealTime"/>
+            </ComboBox>
+
+            <Button x:Name="setPriorityButton" Content="Змінити пріоритет" Width="140" Margin="0,0,10,0" Click="setPriorityButton_Click"/>
+            <Button x:Name="killProcessButton" Content="Завершити процес" Width="140" Click="killProcessButton_Click"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Label Content="Грень Вадим, ІПЗ-24-1" Margin="0,10,0,0" HorizontalAlignment="Right"/>
+        </StackPanel>
+    </Grid>
+</Window>
