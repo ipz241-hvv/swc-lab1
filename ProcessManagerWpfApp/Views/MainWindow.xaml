@@ -10,15 +10,27 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-            <Button Content="Калькулятор" Width="100" Margin="0,0,5,0" Command="{Binding StartCalcCommand}"/>
-            <Button Content="Word" Width="100" Margin="0,0,5,0" Command="{Binding StartWordCommand}"/>
-            <Button Content="Блокнот" Width="100" Margin="0,0,5,0" Command="{Binding StartNotepadCommand}"/>
-            <Button Content="Браузер" Width="100" Margin="0,0,5,0" Command="{Binding StartBrowserCommand}"/>
-            <Button Content="Провідник" Width="100" Margin="0,0,5,0" Command="{Binding StartExplorerCommand}"/>
+        <DockPanel LastChildFill="False" Margin="0,0,0,10">
+            <ItemsControl ItemsSource="{Binding ProgramButtonInfos}" DockPanel.Dock="Left">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Name}" 
+                            Command="{Binding DataContext.StartCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                            CommandParameter="{Binding Path}"
+                            Width="100" Margin="0,0,5,0"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
-            <Button Content="Оновити список" Width="120" Margin="20,0,0,0" Command="{Binding RefreshCommand}"/>
-        </StackPanel>
+            <Button Content="Оновити" 
+                Command="{Binding RefreshCommand}" 
+                Width="120" DockPanel.Dock="Right" Background="#F0F0F0"/>
+        </DockPanel>
 
         <DataGrid Grid.Row="1"
                   AutoGenerateColumns="False"
@@ -39,19 +51,10 @@
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Label Content="Пріоритет:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox
-                Width="130"
+            <ComboBox Width="130"
                 Margin="0,0,10,0"
-                SelectedValuePath="Content"
-                SelectedValue="{Binding SelectedPriority, UpdateSourceTrigger=PropertyChanged}">
-                <ComboBoxItem Content="Idle"/>
-                <ComboBoxItem Content="BelowNormal"/>
-                <ComboBoxItem Content="Normal"/>
-                <ComboBoxItem Content="AboveNormal"/>
-                <ComboBoxItem Content="High"/>
-                <ComboBoxItem Content="RealTime"/>
-            </ComboBox>
-
+                ItemsSource="{Binding PriorityList}"
+                SelectedItem="{Binding SelectedPriority, UpdateSourceTrigger=PropertyChanged}" />
             <Button Content="Змінити пріоритет" Width="140" Margin="0,0,10,0" Command="{Binding SetPriorityCommand}"/>
             <Button Content="Завершити процес" Width="140" Command="{Binding KillCommand}"/>
         </StackPanel>

@@ -14,6 +14,15 @@ internal class MainViewModel : BaseViewModel
     private readonly IDialogService _dialogService;
 
     public ObservableCollection<ProcessInfo> Processes { get; } = new();
+    public List<ProgramButtonInfo> ProgramButtonInfos { get; } = new()
+    {
+        new("Калькулятор", "calc.exe"),
+        new("Word", "WINWORD.exe"),
+        new("Блокнот", "notepad.exe"),
+        new("Браузер", "https://www.google.com"),
+        new("Провідник", "explorer.exe")
+    };
+    public string[] PriorityList { get; } = Enum.GetNames(typeof(ProcessPriorityClass));
 
     private ProcessInfo? _selectedProcess;
     public ProcessInfo? SelectedProcess
@@ -32,41 +41,24 @@ internal class MainViewModel : BaseViewModel
     public ICommand RefreshCommand { get; }
     public ICommand KillCommand { get; }
     public ICommand SetPriorityCommand { get; }
-    public ICommand StartCalcCommand { get; }
-    public ICommand StartWordCommand { get; }
-    public ICommand StartNotepadCommand { get; }
-    public ICommand StartBrowserCommand { get; }
-    public ICommand StartExplorerCommand { get; }
+    public ICommand StartCommand { get; }
 
     public MainViewModel(IProcessProvider provider, IProcessManager manager, IDialogService dialogService)
     {
         _processProvider = provider;
         _processManager = manager;
         _dialogService = dialogService;
-        _dialogService = dialogService;
 
         RefreshCommand = new RelayCommand(_ => LoadProcesses());
-        KillCommand = new RelayCommand(_ => KillSelected(), _ => SelectedProcess != null);
-        SetPriorityCommand = new RelayCommand(_ => SetPriority(), _ => SelectedProcess != null);
-        StartCalcCommand = new RelayCommand(_ => {
-            _processManager.Start("calc.exe");
-            LoadProcesses();
-        });
-        StartWordCommand = new RelayCommand(_ => {
-            _processManager.Start("WINWORD.exe");
-            LoadProcesses();
-        });
-        StartNotepadCommand = new RelayCommand(_ => {
-            _processManager.Start("notepad.exe");
-            LoadProcesses();
-        });
-        StartBrowserCommand = new RelayCommand(_ => {
-            _processManager.Start("https://www.google.com");
-            LoadProcesses();
-        });
-        StartExplorerCommand = new RelayCommand(_ => {
-            _processManager.Start("explorer.exe");
-            LoadProcesses();
+        KillCommand = new RelayCommand(_ => { KillSelected(); LoadProcesses(); }, _ => SelectedProcess != null);
+        SetPriorityCommand = new RelayCommand(_ => { SetPriority(); LoadProcesses(); }, _ => SelectedProcess != null);
+        StartCommand = new RelayCommand(path =>
+        {
+            if (path is string processPath)
+            {
+                _processManager.Start(processPath);
+                LoadProcesses();
+            }
         });
 
         LoadProcesses();
@@ -94,8 +86,6 @@ internal class MainViewModel : BaseViewModel
 
         var (success, fail) = _processManager.Kill(SelectedProcess.Name);
 
-        LoadProcesses();
-
         _dialogService.ShowMessage($"Успішно завершено: {success}\nНе вдалося завершити: {fail}", "Результат");
     }
 
@@ -119,7 +109,5 @@ internal class MainViewModel : BaseViewModel
         {
             _dialogService.ShowMessage($"Не вийшло змінити пріоритет:\n{ex.Message}", "Помилка", true);
         }
-
-        LoadProcesses();
     }
 }
