@@ -11,7 +11,7 @@ DRY (Don't repeat yourself) - це принцип, за яким треба ун
 Тепер в проєкті:
 - Замість окремих команд для кожної програми зроблена одна команда [StartCommand](ProcessManagerWpfApp\ViewModels\MainViewModel.cs#L44), яка запускає процес залежно від [параметра](ProcessManagerWpfApp\ViewModels\MainViewModel.cs#L57), який передається через [RelayCommand](ProcessManagerWpfApp\ViewModels\RelayCommand.cs) в [IProcessManager](ProcessManagerWpfApp\Interfaces\IProcessManager.cs).
 - Щоб не писати вручну кнопки і не міняти кожну кнопку при одній зміні, в MainViewModel є властивість [ProgramButtonInfos](ProcessManagerWpfApp\ViewModels\MainViewModel.cs#L17), яка є списком об'єктів [ProgramButtonInfo](ProcessManagerWpfApp\Models\ProgramButtonInfo.cs), які описують інформацію про назву кнопки та шлях до файлу.
-- Також для пріоритетів процесів є властивість [PriorityList](ProcessManagerWpfApp\ViewModels\MainViewModel.cs#L17), яка потрібна щоб при можливій змінні назв пріоритетів не треба би було міняти по всьому коду назви.
+- Також для пріоритетів процесів є властивість [PriorityList](ProcessManagerWpfApp\ViewModels\MainViewModel.cs#L25), яка потрібна щоб при можливій змінні назв пріоритетів не треба би було міняти по всьому коду назви.
 - В [MainWindow.xaml](ProcessManagerWpfApp\Views\MainWindow.xaml#L13) тепер використовується UI елемент ItemsControl, в якому є один [шаблон кнопки](ProcessManagerWpfApp\Views\MainWindow.xaml#L22). В них вказуються властивості та команди з MainViewModel.
 - [UI елемент ComboBox](ProcessManagerWpfApp\Views\MainWindow.xaml#L54) тепер приймає PriorityList в свою властивість ItemsSource
 
